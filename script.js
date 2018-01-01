@@ -77,6 +77,8 @@ window.onload = function() {
     console.log(person2.dog.sayHello()); // Hello undefined
     console.log(person2.dog.determineContext()); // false
 
+    // *************************************************************************************
+
     // You can explicitly bind this to another object to fix this.
     console.log(person2.dog.sayHello.call(person2)); // Hello Sam
     console.log(person2.dog.determineContext.call(person2)); // true
@@ -121,18 +123,66 @@ window.onload = function() {
     console.log(sayHello.call(Sam)); // Hello Sam
     console.log(sayHello.call(Blake)); // Hello Blake
 
+    // Taking yet another step
+
+    function sumEvenArguments(){
+
+        // converting the array-like object arguments into an array
+        // through the use of slice. Without utilizing call, slice would 
+        // lose scope of the values contained in arguments.
+        var newArgs = [].slice.call(arguments);
+
+        return newArgs.reduce(function(acc,next){
+            if(next % 2 === 0){
+                return acc+next;
+            }
+            return acc;
+        },0);
+    }
+
+    console.log(sumEvenArguments(1,2,3,4)); // 6
+    console.log(sumEvenArguments(1,2,6)); // 8
+    console.log(sumEvenArguments(1,2)); // 2
+
+    // *************************************************************************************
+
     // the apply method works similar to the call method, however it differs when
     // passing additional arguments to the methods. Call will accept an infinite amount
     // of parameters where as apply will only accept two. One being the scope to bind to,
     // and an array of infinite values.
 
-    function sumValues(a, b, c) {
-        return a+b+c;
+    function add(a,b){
+        return a+b;
     }
 
-    console.log(sumValues.apply(this, [4, 7, 8])); // 19
+    console.log(add.apply(this, [4, 7])); // 11
     // You can also utilize the arguments object that corresponds to the paramenters passed to
-    // a function. Since, the arguments object is array-like. 
+    // a function. Since, the arguments object is array-like.
+    
+    // More advanced use of apply.
+    function invokeMax(fn, num){
+    
+        var count = 0;
+        
+        return function() {
+            if (count >= num) {
+                return "Maxed Out!";
+            }
+            
+            else {
+                count++;
+                return fn.apply(this, arguments);
+            }
+        }
+    }
+
+    var addOnlyThreeTimes = invokeMax(add, 3);
+    console.log(addOnlyThreeTimes(1,2)); // 3
+    console.log(addOnlyThreeTimes(2,2)); // 4
+    console.log(addOnlyThreeTimes(1,2)); // 3
+    console.log(addOnlyThreeTimes(1,2)); // "Maxed Out!"
+
+    // *************************************************************************************
 
     // Bind - Works similar to call, however the code isn't executed immediately. It instead
     // returns a copy that can later be executed, and also have additional parameters passed
