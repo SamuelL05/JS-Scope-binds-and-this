@@ -77,6 +77,8 @@ window.onload = function() {
     console.log(person2.dog.sayHello()); // Hello undefined
     console.log(person2.dog.determineContext()); // false
 
+    "use strict"
+
     // *************************************************************************************
 
     // You can explicitly bind this to another object to fix this.
@@ -170,13 +172,21 @@ window.onload = function() {
             }
             
             else {
+                // On the declaration of addOnlyThreeTimes count is incremented.
+                // But on the third execution of addOnlyThreeTimes count will not equal
+                // three until the last iteration, thus allowing for a total of 4 executions
+                // of invokeMax code. 
                 count++;
                 return fn.apply(this, arguments);
+                // utilizing apply in this context isn't exactly necessary, since the code
+                // will execute as expected.
             }
         }
     }
-
     var addOnlyThreeTimes = invokeMax(add, 3);
+    // Sets up invokeMax and allows for the passing of parameters to add through the use of
+    //addOnlyThreeTimes(a, b);
+
     console.log(addOnlyThreeTimes(1,2)); // 3
     console.log(addOnlyThreeTimes(2,2)); // 4
     console.log(addOnlyThreeTimes(1,2)); // 3
