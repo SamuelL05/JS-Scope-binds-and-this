@@ -3,12 +3,13 @@
 // Usually determined by how a function is called (What we call 'execution context')
 // Can be determined useing four rules (global, object/implicit, explicit, new)
 
-// ********************************************************************************************
-// The 'new' keyword will create an object that when using 'this' in the context of that
-// new object will refer to the parent object. Even if there is only the parent and no 
-// child. This is not the case when utilizing 'this' in relation to objects created without 'new',
-// in which case 'this' will refer to the global scope if utilizing 'this' within the parent. 
-// ********************************************************************************************
+    // *****************************************************************************************
+    // The 'new' keyword will create an object that when using 'this' in the context of that
+    // new object will refer to the parent object. Even if there is only the parent and no 
+    // child. This is not the case when utilizing 'this' in relation to objects created without 
+    // 'new'. In which case, 'this' will refer to the scope immediately above
+    // if utilizing 'this' within the parent. 
+    // *****************************************************************************************// ********************************************************************************************
 
 // ***Every time a function is created it will acquire its own 'this'
 // and its own 'arguments' keywords. ***
