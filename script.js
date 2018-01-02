@@ -3,6 +3,16 @@
 // Usually determined by how a function is called (What we call 'execution context')
 // Can be determined useing four rules (global, object/implicit, explicit, new)
 
+// ********************************************************************************************
+// The 'new' keyword will create an object that when using 'this' in the context of that
+// new object will refer to the parent object. Even if there is only the parent and no 
+// child. This is not the case when utilizing 'this' in relation to objects created without 'new',
+// in which case 'this' will refer to the global scope if utilizing 'this' within the parent. 
+// ********************************************************************************************
+
+// ***Every time a function is created it will acquire its own 'this'
+// and its own 'arguments' keywords. ***
+
 var example = "Global";
 console.log(this); // global window object
 
@@ -129,10 +139,11 @@ window.onload = function() {
 
     function sumEvenArguments(){
 
-        // converting the array-like object arguments into an array
-        // through the use of slice. Without utilizing call, slice would 
-        // lose scope of the values contained in arguments.
+        // Without using .call in this context the target of slice would be the newly 
+        // created array. So by using .call we are altering the target of slice to 'arguments'
         var newArgs = [].slice.call(arguments);
+        // Utilizing this as a means to solve the above isn't the only way to effectively
+        // produce code that will provide that same result.
 
         return newArgs.reduce(function(acc,next){
             if(next % 2 === 0){
@@ -165,6 +176,8 @@ window.onload = function() {
     function invokeMax(fn, num){
     
         var count = 0;
+        console.log("InvokeMax initialized.")
+        console.log("count: " + count);
         
         return function() {
             if (count >= num) {
@@ -177,6 +190,7 @@ window.onload = function() {
                 // three until the last iteration, thus allowing for a total of 4 executions
                 // of invokeMax code. 
                 count++;
+                console.log("count: " + count);
                 return fn.apply(this, arguments);
                 // utilizing apply in this context isn't exactly necessary, since the code
                 // will execute as expected.
@@ -187,9 +201,9 @@ window.onload = function() {
     // Sets up invokeMax and allows for the passing of parameters to add through the use of
     //addOnlyThreeTimes(a, b);
 
-    console.log(addOnlyThreeTimes(1,2)); // 3
-    console.log(addOnlyThreeTimes(2,2)); // 4
-    console.log(addOnlyThreeTimes(1,2)); // 3
+    console.log(addOnlyThreeTimes(1,4)); // 5
+    console.log(addOnlyThreeTimes(2,7)); // 9
+    console.log(addOnlyThreeTimes(1,3)); // 4
     console.log(addOnlyThreeTimes(1,2)); // "Maxed Out!"
 
     // *************************************************************************************
@@ -237,7 +251,4 @@ window.onload = function() {
         }
     }
     timeOut2.sayHi(); // Hi Sam
-
-
-
 }
